@@ -16,16 +16,17 @@ class Task:
 class TaskManagerApp:
     def __init__(self, root):
         self.root = root
-        self.root.title("Task Manager")
+        self.root.title("Менеджер проектов")
+        self.root.configure(bg="light gray")
 
         self.tasks = []
 
-        self.description_label = tk.Label(root, text="Description:")
+        self.description_label = tk.Label(root, text="Description:", bg="light gray")
         self.description_label.grid(row=0, column=0)
         self.description_entry = tk.Entry(root, width=50)
         self.description_entry.grid(row=0, column=1, columnspan=2)
 
-        self.due_date_label = tk.Label(root, text="Due Date (YYYY-MM-DD):")
+        self.due_date_label = tk.Label(root, text="Due Date (DD-MM-YYYY):", bg="light gray")
         self.due_date_label.grid(row=1, column=0)
         self.due_date_entry = tk.Entry(root, width=50)
         self.due_date_entry.grid(row=1, column=1, columnspan=2)
@@ -46,9 +47,9 @@ class TaskManagerApp:
         due_date_str = self.due_date_entry.get()
 
         try:
-            due_date = datetime.strptime(due_date_str, '%Y-%m-%d')
+            due_date = datetime.strptime(due_date_str, '%d-%m-%Y')
         except ValueError:
-            messagebox.showerror("Error", "Due date must be in YYYY-MM-DD format")
+            messagebox.showerror("Error", "Due date must be in DD-MM-YYYY format")
             return
 
         task = Task(description, due_date)
@@ -69,7 +70,7 @@ class TaskManagerApp:
         self.tasks_listbox.delete(0, tk.END)
         for task in self.tasks:
             if not task.completed:
-                task_str = f"{task.description} (Due: {task.due_date.strftime('%Y-%m-%d')})"
+                task_str = f"{task.description} (Due: {task.due_date.strftime('%d-%m-%Y')})"
                 self.tasks_listbox.insert(tk.END, task_str)
 
 
@@ -77,3 +78,4 @@ if __name__ == "__main__":
     root = tk.Tk()
     app = TaskManagerApp(root)
     root.mainloop()
+
